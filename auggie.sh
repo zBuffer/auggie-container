@@ -7,10 +7,17 @@ if [ "$1" = "build" -o "$(docker images -q auggie 2> /dev/null)" = "" ]; then
 fi
 
 if [ "$1" = "alias" ]; then
-    echo "alias aug='$(pwd)/auggie.sh'" >> ~/.bashrc
-    echo "alias added to ~/.bashrc"
-    source ~/.bashrc
+    # Detect shell config file (macOS uses zsh by default)
+    if [ -n "$ZSH_VERSION" ] || [ "$SHELL" = "/bin/zsh" ]; then
+        RC_FILE="$HOME/.zshrc"
+    else
+        RC_FILE="$HOME/.bashrc"
+    fi
+    echo "alias aug='$(pwd)/auggie.sh'" >> "$RC_FILE"
+    echo "alias added to $RC_FILE"
+    echo "Run 'source $RC_FILE' or restart your terminal to use it."
     exit 0
 fi
 
 docker run -u $(id -u):$(id -g) --net=host --rm -it -v $(pwd):/app -v ~/.augment:/home/node/.augment auggie
+
