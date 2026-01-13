@@ -19,5 +19,5 @@ if [ "$1" = "alias" ]; then
     exit 0
 fi
 
-docker run -u $(id -u):$(id -g) --net=host --rm -it -v $(pwd):/app -v ~/.augment:/home/node/.augment auggie
+docker run -u $(id -u):$(id -g) --net=host --rm -it -v $(pwd):/app -v ~/.augment:/home/auggie/.augment auggie
 
